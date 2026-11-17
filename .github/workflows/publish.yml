@@ -1,0 +1,53 @@
+name: Publish SeventyTwo.NPOI
+
+# Manual trigger only - run from the Actions tab to build and push to nuget.org
+on:
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: windows-latest
+    permissions:
+      id-token: write # Required for OIDC token issuance (Trusted Publishing)
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 10 SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Pack
+        run: dotnet pack solution/NPOI.Pack.csproj -c Release
+
+      - name: Strip internal NPOI.Pack.* assemblies from packages
+        shell: pwsh
+        run: |
+          ./build/RemovePackFromNupkg.ps1 -NupkgPath (Get-ChildItem solution/Release -Filter *.nupkg).FullName
+          ./build/RemovePackFromNupkg.ps1 -NupkgPath (Get-ChildItem solution/Release -Filter *.snupkg).FullName
+
+      - name: NuGet login (OIDC -> temp API key)
+        uses: NuGet/login@v1
+        id: login
+        with:
+          user: ${{ secrets.NUGET_USER }}
+
+      - name: Push nupkg
+        shell: pwsh
+        env:
+          NUGET_API_KEY: ${{ steps.login.outputs.NUGET_API_KEY }}
+        run: |
+          Get-ChildItem solution/Release -Filter *.nupkg | ForEach-Object {
+            dotnet nuget push $_.FullName --api-key "$env:NUGET_API_KEY" --source https://api.nuget.org/v3/index.json --skip-duplicate
+          }
+
+      - name: Push snupkg
+        shell: pwsh
+        env:
+          NUGET_API_KEY: ${{ steps.login.outputs.NUGET_API_KEY }}
+        run: |
+          Get-ChildItem solution/Release -Filter *.snupkg | ForEach-Object {
+            dotnet nuget push $_.FullName --api-key "$env:NUGET_API_KEY" --source https://api.nuget.org/v3/index.json --skip-duplicate
+          }

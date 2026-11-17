@@ -12,20 +12,16 @@
 
   <PropertyGroup>
     <VersionPrefix>2.8.1</VersionPrefix>
-    <Title>NPOI</Title>
-    <Authors>Tony Qu,NPOI Contributors</Authors>
-    <Owners>Nissl Lab</Owners>
-    <Description>.NET port of Apache POI</Description>
-    <Summary>NPOI can read and write xls (Excel 97-2003), xlsx(Excel 2007+) and docx(Word 2007+). </Summary>
+    <Title>SeventyTwo.NPOI</Title>
+    <Authors>SeventyTwo</Authors>
+    <Owners>SeventyTwo</Owners>
+    <Description>Unofficial fork of NPOI (https://github.com/nissl-lab/npoi), a .NET port of Apache POI. Reads and writes xls (Excel 97-2003), xlsx (Excel 2007+) and docx (Word 2007+). Original code by Tony Qu, Nissl Lab and NPOI contributors under Apache License 2.0. Maintained by SeventyTwo; not affiliated with or endorsed by the original authors.</Description>
+    <Summary>Unofficial Apache-2.0 fork of NPOI: reads and writes xls, xlsx and docx. Built from source; no OSMF maintenance-fee EULA applies to these binaries.</Summary>
     <RepositoryUrl>https://github.com/nissl-lab/npoi</RepositoryUrl>
-      
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <PackageLicenseFile>OSMFEULA.txt</PackageLicenseFile>
-    <PackageIcon>logo\60_60.jpg</PackageIcon>
+
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageProjectUrl>http://nissl-lab.github.io/npoi/</PackageProjectUrl>
-    <PackageReleaseNotes>https://github.com/nissl-lab/npoi/discussions/1864</PackageReleaseNotes>
-    <Copyright>Nissl LLC</Copyright>
+    <Copyright>Copyright (c) Nissl Lab, Tony Qu and NPOI contributors (original code, Apache-2.0); package fork by SeventyTwo</Copyright>
     <PackageTags>xlsx xls Excel Word docx office ole</PackageTags>
 
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -50,11 +46,11 @@
     <NoWarn>$(NoWarn);CS0108</NoWarn> <!-- XXX hides inherited member -->
     <NoWarn>$(NoWarn);CS0114</NoWarn> <!-- XXX hides inherited member -->
     <NoWarn>$(NoWarn);CS0162</NoWarn> <!-- Unreachable code detected -->
-    <NoWarn>$(NoWarn);CS0168</NoWarn> <!-- The variable XXX is declared but never used -->
+    <NoWarn>$(NoWarn);CS0168</NoWarn> <!-- Variable is declared but never used -->
     <NoWarn>$(NoWarn);CS0169</NoWarn> <!-- Unreachable code detected -->
     <NoWarn>$(NoWarn);CS0414</NoWarn> <!-- The field XXX is assigned but its value is never used -->
     <NoWarn>$(NoWarn);CS0628</NoWarn> <!-- new protected member declared in sealed type -->
-    <NoWarn>$(NoWarn);CS0649</NoWarn> <!-- Field XXX is never assigned to -->
+    <NoWarn>$(NoWarn);CS0649</NoWarn> <!-- Field is never assigned to -->
     <NoWarn>$(NoWarn);CS0659</NoWarn> <!-- XXX overrides Object.Equals(object o) but does not override Object.GetHashCode() -->
     <NoWarn>$(NoWarn);NU1900</NoWarn> <!-- NuGet vulnerability warning access denied -->
 
@@ -69,10 +65,10 @@
     <NoWarn>$(NoWarn);CA1041</NoWarn> <!-- Provide a message for the ObsoleteAttribute that marks Evaluate as Obsolete -->
     <NoWarn>$(NoWarn);CA1051</NoWarn> <!-- Do not declare visible instance fields -->
     <NoWarn>$(NoWarn);CA1061</NoWarn> <!-- XXX hides a more specific base class method -->
-    <NoWarn>$(NoWarn);CA1304</NoWarn> <!-- The behavior of 'string.Compare(string, string, bool)' could vary based on the current user's locale settings. -->
+    <NoWarn>$(NoWarn);CA1304</NoWarn> <!-- The behavior of 'string.Compare(string, string, bool)' could vary based on your user's locale settings. -->
     <NoWarn>$(NoWarn);CA1305</NoWarn> <!-- The behavior of XXX could vary based on the current user's locale settings.  -->
     <NoWarn>$(NoWarn);CA1309</NoWarn> <!-- Use ordinal string comparison -->
-    <NoWarn>$(NoWarn);CA1310</NoWarn> <!-- The behavior could vary based on the current user's locale settings -->
+    <NoWarn>$(NoWarn);CA1310</NoWarn> <!-- The behavior could vary based on your user's locale settings -->
     <NoWarn>$(NoWarn);CA1311</NoWarn> <!-- Specify a culture or use an invariant version to avoid implicit dependency on current culture -->
     <NoWarn>$(NoWarn);CA1507</NoWarn> <!-- Use nameof in place of string literal -->
     <NoWarn>$(NoWarn);CA1510</NoWarn> <!-- Use 'ArgumentNullException.ThrowIfNull' instead of explicitly throwing a new exception instance -->
@@ -103,7 +99,7 @@
     <NoWarn>$(NoWarn);CA2219</NoWarn> <!-- Do not raise an exception from within a finally clause -->
     <NoWarn>$(NoWarn);CA2241</NoWarn> <!-- Provide correct arguments to formatting methods -->
     <NoWarn>$(NoWarn);CA2263</NoWarn> <!-- Prefer the generic overload 'System.Enum.GetValues<TEnum>()' instead of 'System.Enum.GetValues(System.Type)' -->
-    <NoWarn>$(NoWarn);CA3075</NoWarn> <!-- Unsafe overload of 'LoadXml' method -->
+    <NoWarn>$(NoWarn);CA3075</NoWarn> <!-- Unsafe overload of 'LoadXml' from 'XmlDocument' is insecure in this context -->
     <NoWarn>$(NoWarn);CA5351</NoWarn> <!-- broken cryptographic algorithm -->
     <NoWarn>$(NoWarn);CA5369</NoWarn> <!-- This overload of the 'XmlSerializer.Deserialize' method is potentially unsafe. -->
 
@@ -112,11 +108,11 @@
 
   <ItemGroup>
     <None Include="..\LICENSE" Pack="true" Visible="false" PackagePath="" />
-    <None Include="..\OSMFEULA.txt" Pack="true" Visible="false" PackagePath="" />
     <None Include="..\build\README.md" Pack="true" Visible="false" PackagePath="" />
-    <None Include="..\logo\*.png" Pack="true" Visible="false" PackagePath="logo\" />
-    <None Include="..\logo\*.jpg" Pack="true" Visible="false" PackagePath="logo\" />
-    <None Include="..\build\NPOI.targets" Pack="true" Visible="false" PackagePath="build\" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net472'">
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" PrivateAssets="All" />
   </ItemGroup>
 
 </Project>
